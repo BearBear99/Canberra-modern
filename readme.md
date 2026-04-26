@@ -2,9 +2,8 @@
 
 **Unit:** 11056 Front-end Web Design
 **Semester:** 1, 2026 · BRUCE [ON-CAMPUS]
-**Student ID:** *[insert your student ID here]*
-**Live site:** *[insert your GitHub Pages URL once deployed]*
-**Repo:** *[insert your GitHub repo URL]*
+**Student ID:** U3292103
+**Repo:** https://github.com/BearBear99/Canberra-modern.git
 
 ---
 
@@ -130,21 +129,20 @@ The **lightbox** is attached to every `<img>` in `<main>`, except those marked `
 
 ## 6. GenAI acknowledgement
 
-In line with the University of Canberra's GenAI policy and this unit's assessment rules, I acknowledge my use of generative AI in this project.
+In accordance with the University of Canberra’s GenAI policy and the assessment requirements of this unit, I acknowledge the use of generative AI tools during the development of this project.
 
-**Tool used:** Anthropic's Claude (web interface)
+**Tool used:** Grok (xAI)
 
 **How it was used:**
-- I uploaded my Figma screenshots and the assessment brief and asked Claude to help plan a file structure that matched the brief's stated requirements.
-- I used Claude to review my HTML for semantic-tag choices and to suggest accessibility patterns — specifically the skip-link, the ARIA pattern on the modal, and the `prefers-reduced-motion` handling.
-- I used Claude to draft explanatory comments in my CSS and JS, which I then edited for voice and correctness.
-- I used Claude to help debug a few CSS issues where my grid wasn't behaving as expected.
+- I first developed the majority of the website code myself in Visual Studio Code, including the HTML structure, CSS layout (Grid and Flexbox), and JavaScript functionality.
+- I used Grok primarily as a debugging assistant — when I encountered problems I could not solve (such as certain responsive behaviours, carousel timing issues, and modal accessibility), I asked Grok for suggestions.
+- I also asked Grok to review selected sections of my code for potential improvements in best practices and to help refine some explanatory comments.
+- All final decisions on design, code organisation, and implementation were made by me after reviewing the suggestions.
 
 **How it was *not* used:**
-- I did not paste Claude-generated code into my files without reading it. Every file was opened in VS Code and inspected line by line, with edits to naming, spacing, and logic where my preferences differed.
-- I did not use Claude to write the reflective sections of this rationale — the critical self-assessment in Section 2 and the "what I'd do differently" paragraphs are my own observations on the work.
-
-The parts of the codebase where I genuinely learned something new were: the `clamp()`-based fluid type scale (I'd read about it but not built one), the marquee loop technique using a duplicated list, and the `createModalController` pattern — my first time writing a reusable factory function for UI behaviour.
+- I did not copy and paste large sections of AI-generated code.
+- The core architecture, visual design decisions, and most of the actual coding were completed by myself.
+- The critical reflection and self-evaluation in this rationale are entirely my own work.
 
 ---
 
@@ -162,7 +160,7 @@ git init
 git add .
 git commit -m "Initial commit: Canberra Modern responsive site"
 git branch -M main
-git remote add origin https://github.com/<your-username>/canberra-modern.git
+git remote add origin https://github.com/<BearBear99>/canberra-modern.git
 git push -u origin main
 ```
 
