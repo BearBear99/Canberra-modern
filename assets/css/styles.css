@@ -1,0 +1,1747 @@
+/* ==========================================================================
+   reset.css
+   A lightweight modern CSS reset.
+   Based on Andy Bell's "A (more) modern CSS reset" (2023) — adapted.
+   Source: https://piccalil.li/blog/a-more-modern-css-reset/
+   ========================================================================== */
+
+/* Use border-box sizing everywhere so padding/border don't bloat widths */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Remove default margins — we'll set them intentionally in styles.css */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* Prevent font size inflation on mobile landscape orientation */
+html {
+  -moz-text-size-adjust: none;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
+  scroll-behavior: smooth;
+}
+
+/* Give body sensible defaults */
+body {
+  min-height: 100vh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Balance text wrapping on headings for nicer line breaks */
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+/* Make images responsive and remove their inline-block bottom gap */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Inherit fonts for form controls (browsers don't do this by default) */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+/* Remove default list styling where we use <ul>/<ol> for nav or layout */
+ul[role="list"],
+ol[role="list"] {
+  list-style: none;
+}
+
+/* Make anchors inherit color unless styled otherwise */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Respect users who prefer reduced motion — disable our animations */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+/* ==========================================================================
+   Canberra Modern — styles.css
+   --------------------------------------------------------------------------
+   Unit: 11056 Front-end Web Design · Semester 1, 2026
+   --------------------------------------------------------------------------
+   RESPONSIVE STRATEGY — MOBILE-FIRST
+   --------------------------------------------------------------------------
+   This stylesheet is written mobile-first: all base declarations outside
+   @media blocks target phones (320–480 px). Larger screens progressively
+   enhance the layout via @media (min-width: ...) queries.
+
+   Why mobile-first?
+     1. It forces the designer to prioritise the smallest, most constrained
+        experience first, where content hierarchy matters most.
+     2. On mobile, CSS parsing is cheaper — the browser never executes media
+        queries that don't match, so mobile phones download and apply the
+        fewest rules.
+     3. Progressive enhancement is more resilient: if a media query fails,
+        users still get the mobile layout (Marcotte, 2010).
+
+   Breakpoints used in this file:
+     - Base (no query)      — 320 – 767 px   (mobile phones)
+     - (min-width: 768px)   — 768 – 1023 px  (tablets, small laptops)
+     - (min-width: 1024px)  — 1024 px and up (desktops)
+
+   Touch-target minimum: 44 × 44 px everywhere, per WCAG 2.5.5.
+   --------------------------------------------------------------------------
+   FILE ORGANISATION
+     1.  Design tokens (CSS custom properties)
+     2.  Base / typography
+     3.  Utilities
+     4.  Layout primitives
+     5.  Buttons
+     6.  Site header + navigation
+     7.  Hero (with carousel)
+     8.  Cards
+     9.  Sections
+    10.  Partner marquee
+    11.  Video embed
+    12.  Modals (shared base)
+    13.  Booking modal
+    14.  Donation modal
+    15.  Lightbox
+    16.  Forms
+    17.  Gallery filter
+    18.  Footer
+    19.  Animations
+    20.  Tablet breakpoint (min-width: 768px)
+    21.  Desktop breakpoint (min-width: 1024px)
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. Design tokens
+   --------------------------------------------------------------------------
+   Custom properties centralise the palette, spacing scale and typography so
+   changing a single value re-themes the whole site. This is the CSS
+   equivalent of the DRY principle (Frain, 2020).
+
+   Note the fluid type scale (clamp(min, preferred, max)) — it smoothly
+   scales between mobile and desktop without per-breakpoint font-size rules.
+   ========================================================================== */
+
+:root {
+  /* Brand palette — dusty pink, coral, cream — pulled from the CM logo */
+  --c-pink-100: #fbeaea;
+  --c-pink-200: #f4cfcf;
+  --c-pink-400: #d98a92;
+  --c-pink-500: #c26873;
+  --c-coral:    #e8958a;
+  --c-cream:    #f6eddf;
+  --c-navy:     #1a2340;
+  --c-ink:      #2a2530;
+  --c-muted:    #6b6470;
+  --c-line:     #e6d7d7;
+  --c-white:    #ffffff;
+
+  /* Typography — distinctive display serif + refined humanist sans.
+     Avoids generic AI aesthetics by pairing a heavy serif (DM Serif
+     Display) with a geometric sans (Manrope). */
+  --ff-display: "DM Serif Display", Georgia, "Times New Roman", serif;
+  --ff-body:    "Manrope", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+
+  /* Fluid type scale — clamp() lets one declaration cover every viewport.
+     Syntax: clamp(mobile-min, preferred-scale-factor, desktop-max). */
+  --fs-xs:   0.8125rem;                              /* 13px */
+  --fs-sm:   0.9375rem;                              /* 15px */
+  --fs-base: 1rem;                                   /* 16px */
+  --fs-lg:   clamp(1.0625rem, 0.95rem + 0.5vw, 1.25rem);
+  --fs-xl:   clamp(1.375rem, 1rem + 2vw, 2rem);
+  --fs-2xl:  clamp(1.75rem, 1.2rem + 2.5vw, 2.75rem);
+  --fs-3xl:  clamp(2.25rem, 1.6rem + 3.5vw, 4.25rem);
+
+  /* Spacing scale — 4/8 px-based, consistent rhythm */
+  --sp-1:  0.25rem;
+  --sp-2:  0.5rem;
+  --sp-3:  0.75rem;
+  --sp-4:  1rem;
+  --sp-5:  1.5rem;
+  --sp-6:  2rem;
+  --sp-7:  3rem;
+  --sp-8:  4rem;
+  --sp-9:  6rem;
+
+  /* Shape */
+  --radius-sm: 6px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-pill: 999px;
+
+  /* Elevation — soft editorial shadows, not boxy material-design shadows */
+  --shadow-sm: 0 2px 6px rgba(42, 37, 48, 0.06);
+  --shadow-md: 0 12px 28px rgba(42, 37, 48, 0.08);
+  --shadow-lg: 0 24px 60px rgba(42, 37, 48, 0.18);
+
+  /* Motion */
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 180ms;
+  --dur-med:  300ms;
+  --dur-slow: 500ms;
+
+  /* Layout */
+  --container: 1200px;
+  --nav-height: 64px;                /* mobile default; desktop bumps to 72 */
+
+  /* Minimum tap target (WCAG 2.5.5 AAA) */
+  --tap-min: 44px;
+}
+
+
+/* ==========================================================================
+   2. Base / typography
+   --------------------------------------------------------------------------
+   Base styles target mobile first. All font sizes are fluid via clamp() so
+   we rarely need to override them at breakpoints.
+   ========================================================================== */
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;  /* prevent iOS landscape font inflation */
+}
+
+body {
+  font-family: var(--ff-body);
+  font-size: var(--fs-base);
+  line-height: 1.6;
+  color: var(--c-ink);
+  background: var(--c-white);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--ff-display);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  color: var(--c-ink);
+  text-wrap: balance;              /* nicer line breaks in supporting browsers */
+}
+h1 { font-size: var(--fs-3xl); }
+h2 { font-size: var(--fs-2xl); }
+h3 { font-size: var(--fs-xl);  }
+h4 {
+  font-size: var(--fs-lg);
+  font-family: var(--ff-body);
+  font-weight: 600;
+}
+
+p + p { margin-top: var(--sp-3); }
+
+a {
+  color: inherit;
+  text-decoration: none;
+  transition: color var(--dur-fast) var(--ease);
+}
+a:hover,
+a:focus-visible { color: var(--c-pink-500); }
+
+/* Accessible focus style: only shows on keyboard navigation */
+:focus-visible {
+  outline: 2px solid var(--c-pink-400);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/* Images: responsive by default, no inline-block gap */
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Form controls should inherit font */
+button,
+input,
+select,
+textarea { font: inherit; color: inherit; }
+
+
+/* ==========================================================================
+   3. Utilities
+   --------------------------------------------------------------------------
+   A small set of one-job classes. Used instead of inline styles, which the
+   assessment brief prohibits. Naming uses the "u-" prefix so they can't
+   collide with component classes.
+   ========================================================================== */
+
+/* Screen-reader-only text — visible to assistive tech only */
+.sr-only {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: absolute;
+  top: -48px;
+  left: var(--sp-4);
+  background: var(--c-ink);
+  color: var(--c-white);
+  padding: var(--sp-2) var(--sp-4);
+  border-radius: var(--radius-sm);
+  z-index: 1000;
+  transition: top var(--dur-fast) var(--ease);
+}
+.skip-link:focus { top: var(--sp-3); color: var(--c-white); }
+
+.u-text-center   { text-align: center; }
+.u-mt-4          { margin-top: var(--sp-4); }
+.u-mt-6          { margin-top: var(--sp-6); }
+.u-mb-2          { margin-bottom: var(--sp-2); }
+.u-mb-3          { margin-bottom: var(--sp-3); }
+.u-mb-4          { margin-bottom: var(--sp-4); }
+.u-my-sm         { margin-block: var(--sp-3) var(--sp-5); }
+.u-measure       { max-width: 68ch; margin-inline: auto; }
+.u-measure-sm    { max-width: 56ch; margin-inline: auto; }
+.u-muted         { color: var(--c-muted); }
+.u-small         { font-size: var(--fs-sm); }
+.u-tight-head    { padding-bottom: var(--sp-5); }
+.u-tight-top     { padding-top: var(--sp-5); }
+.u-loose-top     { padding-top: var(--sp-7); }
+.u-intro-lead    { margin-top: var(--sp-4); }
+.u-event-desc    { color: var(--c-muted); font-size: var(--fs-sm); }
+.u-link-inline   { color: var(--c-pink-500); text-decoration: underline; }
+.u-footer-blurb  { font-size: var(--fs-sm); max-width: 36ch; color: #a89fb0; }
+.u-socials-mt    { margin-top: var(--sp-4); }
+.u-bottom-credit { margin-top: var(--sp-2); }
+.u-section-head-block { margin-top: var(--sp-6); margin-bottom: var(--sp-4); }
+
+/* Button styled as an inline link — used for the donation trigger inside
+   a paragraph. A <button> is the correct element for "trigger action"
+   (buttons activate; links navigate). */
+.u-btn-as-link {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
+/* Respect users who prefer reduced motion — disable non-essential animations */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
+/* ==========================================================================
+   4. Layout primitives
+   ========================================================================== */
+
+/* Container — horizontally centres content with consistent gutters.
+   Mobile uses tighter gutters (16px) because every pixel of horizontal
+   space counts on a 320px screen. */
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--sp-4);
+}
+
+/* Section — vertical rhythm. Mobile uses tighter padding so the user
+   doesn't have to scroll through huge empty bands on a small screen. */
+.section { padding-block: var(--sp-7); }
+
+.section--soft {
+  background: linear-gradient(180deg, var(--c-pink-100) 0%, #f8dede 100%);
+}
+
+.section__head {
+  text-align: center;
+  margin-bottom: var(--sp-6);
+}
+.section__eyebrow {
+  display: inline-block;
+  font-size: var(--fs-xs);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--c-pink-500);
+  font-weight: 600;
+  margin-bottom: var(--sp-3);
+}
+/* Decorative dotted flourish — typographic mid-century detail */
+.section__head::after {
+  content: "• • • • •";
+  display: block;
+  color: var(--c-pink-400);
+  letter-spacing: 0.4em;
+  font-size: 0.7rem;
+  margin-top: var(--sp-3);
+}
+
+
+/* ==========================================================================
+   5. Buttons
+   --------------------------------------------------------------------------
+   All buttons meet WCAG 2.5.5 minimum 44×44px touch-target size on mobile.
+   ========================================================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--sp-2);
+  min-height: var(--tap-min);
+  padding: 0.8rem 1.5rem;
+  font-family: var(--ff-body);
+  font-weight: 600;
+  font-size: var(--fs-sm);
+  letter-spacing: 0.02em;
+  border: none;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  text-align: center;
+  transition: transform var(--dur-fast) var(--ease),
+              background var(--dur-fast) var(--ease),
+              box-shadow var(--dur-fast) var(--ease);
+}
+.btn--primary {
+  background: var(--c-pink-400);
+  color: var(--c-white);
+  box-shadow: var(--shadow-sm);
+}
+.btn--primary:hover,
+.btn--primary:focus-visible {
+  background: var(--c-pink-500);
+  color: var(--c-white);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+.btn--ghost {
+  background: transparent;
+  color: var(--c-ink);
+  border: 1.5px solid var(--c-ink);
+}
+.btn--ghost:hover,
+.btn--ghost:focus-visible {
+  background: var(--c-ink);
+  color: var(--c-white);
+}
+
+
+/* ==========================================================================
+   6. Site header + navigation
+   --------------------------------------------------------------------------
+   Mobile pattern: sticky top bar with hamburger toggle that opens a
+   slide-down panel. Desktop: horizontal list (handled in breakpoint block).
+   ========================================================================== */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(255, 255, 255, 0.92);
+  /* Frosted-glass effect on supporting browsers; solid white elsewhere. */
+  backdrop-filter: saturate(1.4) blur(14px);
+  -webkit-backdrop-filter: saturate(1.4) blur(14px);
+  border-bottom: 1px solid var(--c-line);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--nav-height);
+}
+
+.nav__logo {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-family: var(--ff-display);
+  font-size: 1rem;
+  color: var(--c-ink);
+}
+.nav__logo img { height: 36px; width: auto; }
+
+/* Mobile nav list — hidden by default, slides down when opened */
+.nav__list {
+  position: fixed;
+  inset: var(--nav-height) 0 auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  background: var(--c-white);
+  border-bottom: 1px solid var(--c-line);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-110%);     /* hidden above the viewport */
+  transition: transform var(--dur-med) var(--ease);
+}
+.nav__list.is-open { transform: translateY(0); }
+
+.nav__list li { border-bottom: 1px solid var(--c-line); }
+.nav__list li:last-child { border-bottom: 0; }
+
+.nav__link {
+  display: block;
+  min-height: var(--tap-min);
+  padding: 1rem var(--sp-4);
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--c-ink);
+}
+
+/* Hamburger toggle button — always 44×44 for fingers */
+.nav__toggle {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: var(--tap-min);
+  height: var(--tap-min);
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+}
+.nav__toggle-bar {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--c-ink);
+  margin: 3px 0;
+  transition: transform var(--dur-med) var(--ease),
+              opacity var(--dur-fast) var(--ease);
+}
+/* When aria-expanded=true, the three bars animate into an "X". */
+.nav__toggle[aria-expanded="true"] .nav__toggle-bar:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+.nav__toggle[aria-expanded="true"] .nav__toggle-bar:nth-child(2) { opacity: 0; }
+.nav__toggle[aria-expanded="true"] .nav__toggle-bar:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+
+/* ==========================================================================
+   7. Hero + carousel
+   --------------------------------------------------------------------------
+   MOBILE-FIRST CAROUSEL NOTES
+   --------------------------------------------------------------------------
+   Why 5 slides? Five is the maximum recommended for a hero carousel by
+   the Baymard Institute (2021) — beyond that, users stop paying attention
+   to anything past slide 3. Five gives architectural variety without
+   overwhelming the user or exhausting the auto-advance cycle (5 × 5s = 25s
+   for a full loop, which matches the typical first-visit attention span).
+
+   On mobile:
+     - Aspect ratio shifts from 4/5 (tall) on desktop to 16/10 (wider) to
+       fit more of the image without vertical scroll being needed to see it.
+     - Arrow buttons shrink to 36px and sit closer to the edges.
+     - Caption chip shrinks and wraps to ~70% max-width.
+     - Dots stay 10px (usability ceiling; smaller becomes un-tappable).
+
+   Why fade over slide? A crossfade is less motion per transition, which is
+   gentler for users with vestibular sensitivities. It also masks loading
+   of the next slide's image (opacity transitions don't reveal loading).
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  padding-block: var(--sp-7) var(--sp-6);
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 60% 80% at 90% 10%, var(--c-pink-200) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 60% at 10% 90%, var(--c-cream) 0%, transparent 50%),
+    var(--c-white);
+}
+
+.hero__grid {
+  display: grid;
+  grid-template-columns: 1fr;       /* mobile: single column */
+  gap: var(--sp-6);
+  align-items: center;
+}
+
+.hero__eyebrow {
+  font-size: var(--fs-xs);
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--c-pink-500);
+  font-weight: 600;
+  margin-bottom: var(--sp-3);
+}
+
+.hero__title {
+  font-size: var(--fs-3xl);
+  line-height: 1.05;
+  margin-bottom: var(--sp-4);
+}
+/* Highlighted word — brushstroke background behind the text */
+.hero__title .highlight {
+  background: linear-gradient(120deg, var(--c-pink-200) 0%, var(--c-coral) 100%);
+  background-size: 100% 0.35em;
+  background-repeat: no-repeat;
+  background-position: 0 88%;
+  padding-inline: 0.15em;
+}
+
+.hero__lead {
+  font-size: var(--fs-lg);
+  color: var(--c-muted);
+  max-width: 52ch;
+  margin-bottom: var(--sp-5);
+}
+
+.hero__actions {
+  display: flex;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+
+/* --- Carousel component --- */
+.carousel {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  aspect-ratio: 16 / 10;             /* mobile: wider than tall */
+  box-shadow: var(--shadow-lg);
+  background: var(--c-pink-100);
+}
+
+.carousel__track { position: relative; width: 100%; height: 100%; }
+
+/* Each slide is absolutely positioned in the same stacking context.
+   Active slide has opacity:1, others fade to 0. */
+.carousel__slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 900ms var(--ease);
+}
+.carousel__slide.is-active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.carousel__slide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;                 /* fills the frame without distortion */
+}
+
+/* Caption chip — floats over whichever slide is active. Mobile keeps it
+   small and in the lower-left so it never obscures the main subject. */
+.carousel__caption {
+  position: absolute;
+  bottom: var(--sp-3);
+  left: var(--sp-3);
+  background: var(--c-white);
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-md);
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  z-index: 2;
+  max-width: 75%;
+}
+
+/* Prev/next arrow buttons — circular glass buttons that work over any
+   photo. Mobile size: 36px (the touch target is the surrounding padding). */
+.carousel__btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  min-width: var(--tap-min);
+  min-height: var(--tap-min);
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 255, 255, 0.85);
+  color: var(--c-ink);
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  box-shadow: var(--shadow-sm);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: background var(--dur-fast) var(--ease),
+              transform var(--dur-fast) var(--ease);
+  z-index: 3;
+}
+.carousel__btn:hover,
+.carousel__btn:focus-visible {
+  background: var(--c-white);
+  transform: translateY(-50%) scale(1.1);
+}
+.carousel__btn--prev { left: var(--sp-2); }
+.carousel__btn--next { right: var(--sp-2); }
+
+/* Dot indicators — minimum 10px so they remain visible but each has a
+   larger invisible tap area via padding. */
+.carousel__dots {
+  position: absolute;
+  bottom: var(--sp-3);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: var(--sp-2);
+  z-index: 3;
+}
+.carousel__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid var(--c-white);
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  transition: background var(--dur-fast) var(--ease),
+              width var(--dur-med) var(--ease);
+}
+.carousel__dot.is-active {
+  background: var(--c-white);
+  width: 24px;
+  border-radius: var(--radius-pill);
+}
+
+
+/* ==========================================================================
+   8. Cards
+   --------------------------------------------------------------------------
+   Uses CSS Grid auto-fit so cards re-flow to 1 / 2 / 3 columns automatically
+   without needing per-breakpoint media queries for column count. The
+   minmax(260px, 1fr) floor guarantees cards never crush below a usable
+   width on small screens.
+   ========================================================================== */
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: var(--sp-5);
+}
+
+.card {
+  background: var(--c-white);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--dur-med) var(--ease),
+              box-shadow var(--dur-med) var(--ease);
+  display: flex;
+  flex-direction: column;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.card__media {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+}
+.card__media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--dur-slow) var(--ease);
+}
+.card:hover .card__media img { transform: scale(1.06); }
+
+.card__body {
+  padding: var(--sp-4);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  flex: 1;
+}
+.card__title { font-size: 1.25rem; }
+.card__meta {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  font-size: var(--fs-sm);
+  color: var(--c-muted);
+}
+.card__meta span { display: inline-flex; align-items: center; gap: var(--sp-2); }
+.card__meta .icon { color: var(--c-pink-400); font-size: 0.9rem; }
+.card__actions { margin-top: auto; }
+
+.card__tag {
+  position: absolute;
+  top: var(--sp-3);
+  left: var(--sp-3);
+  background: var(--c-ink);
+  color: var(--c-white);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+}
+
+/* Hidden by gallery filter — display:none removes from flow and a11y tree */
+.card.is-hidden { display: none; }
+
+
+/* ==========================================================================
+   9. Sections — about, contact, feature image
+   ========================================================================== */
+
+.about-intro {
+  display: grid;
+  grid-template-columns: 1fr;         /* mobile: stacked */
+  gap: var(--sp-6);
+  align-items: center;
+}
+.about-intro__media {
+  aspect-ratio: 1;
+  border-radius: 50%;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  max-width: 280px;
+  justify-self: center;
+}
+.about-intro__media img { width: 100%; height: 100%; object-fit: cover; }
+
+.feature-image {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-block: var(--sp-6);
+  aspect-ratio: 16 / 9;
+  box-shadow: var(--shadow-md);
+}
+.feature-image img { width: 100%; height: 100%; object-fit: cover; }
+
+.support {
+  background: var(--c-pink-100);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-5);
+  text-align: center;
+}
+
+.contact {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-5);
+  align-items: center;
+  background: var(--c-cream);
+  border-radius: var(--radius-lg);
+  padding: var(--sp-5);
+}
+.contact__image {
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.contact__image img { width: 100%; height: 100%; object-fit: cover; }
+
+
+/* ==========================================================================
+   10. Partner marquee
+   --------------------------------------------------------------------------
+   Infinite horizontal scroll. Technique: duplicate the logo list in HTML,
+   wrap in overflow:hidden, animate by translateX(-50%) — the duplicate
+   replaces the original exactly as the original exits.
+
+   Mobile tweaks: duration reduced from 35s to 22s so logos cycle faster on
+   small screens where fewer logos are visible at once; padding reduced.
+   ========================================================================== */
+
+.marquee {
+  overflow: hidden;
+  /* Fade edges so logos drift in/out of view rather than popping. */
+  mask-image: linear-gradient(90deg,
+    transparent 0, #000 8%, #000 92%, transparent 100%);
+  -webkit-mask-image: linear-gradient(90deg,
+    transparent 0, #000 8%, #000 92%, transparent 100%);
+  padding-block: var(--sp-5);
+  margin-top: var(--sp-5);
+}
+.marquee__track {
+  display: flex;
+  gap: var(--sp-5);
+  width: max-content;
+  animation: marquee-scroll 22s linear infinite;
+}
+.marquee:hover .marquee__track {
+  /* Pause scroll on hover so users can read a partner name. */
+  animation-play-state: paused;
+}
+.marquee__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--c-white);
+  border: 1px solid var(--c-line);
+  border-radius: var(--radius-md);
+  flex-shrink: 0;
+  height: 80px;
+  width: 160px;
+  transition: border-color var(--dur-fast) var(--ease),
+              transform var(--dur-fast) var(--ease);
+}
+.marquee__item:hover {
+  border-color: var(--c-pink-400);
+  transform: translateY(-2px);
+}
+.marquee__item img {
+  max-height: 44px;
+  max-width: 120px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+@keyframes marquee-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+
+/* ==========================================================================
+   11. Responsive YouTube embed (16:9)
+   --------------------------------------------------------------------------
+   aspect-ratio: 16/9 on the wrapper + position:absolute on the iframe gives
+   perfect scaling on every viewport without the older padding-top: 56.25%
+   hack. Max-width caps the embed on large screens.
+   ========================================================================== */
+
+.video-embed {
+  position: relative;
+  width: 100%;
+  max-width: 720px;
+  margin: var(--sp-5) auto 0;
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  background: var(--c-ink);
+}
+.video-embed iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* --- Photo variant --- */
+/* Used when we want a featured photo in the same slot the YouTube embed
+   used to sit in, keeping the visual rhythm identical. Because the
+   wrapper is now a <figure> with a <figcaption>, we override the
+   aspect-ratio (so the caption can grow below) and style the caption
+   as a subtle editorial label beneath the image. */
+.video-embed--photo {
+  aspect-ratio: auto;                   /* caption adds height — let it */
+  background: transparent;              /* no dark bar behind the photo */
+  padding: 0;
+  margin: var(--sp-5) auto 0;
+}
+.video-embed--photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;                 /* keep the familiar cinematic frame */
+  object-fit: cover;
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+.video-embed__caption {
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--c-cream);
+  color: var(--c-muted);
+  text-align: center;
+  font-size: var(--fs-sm);
+  font-style: italic;
+  letter-spacing: 0.02em;
+  border-top: 1px solid var(--c-line);
+  border-radius: 0 0 var(--radius-md) var(--radius-md);
+}
+
+
+/* ==========================================================================
+   12. Modals — shared base
+   --------------------------------------------------------------------------
+   All three overlays (booking, donation, lightbox) share this base: fixed
+   full-viewport backdrop, centred panel, opacity-based fade transition.
+
+   Mobile: panel fills almost the full viewport (with 16px margin) so form
+   fields are as large as possible. Desktop: panel is capped at 520px wide.
+   ========================================================================== */
+
+.modal {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: var(--sp-3);
+  background: rgba(26, 35, 64, 0.55);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--dur-med) var(--ease),
+              visibility var(--dur-med) var(--ease);
+  z-index: 1000;
+}
+.modal.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal__panel {
+  position: relative;
+  background: var(--c-white);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 520px;
+  max-height: 92vh;
+  overflow-y: auto;
+  box-shadow: var(--shadow-lg);
+  transform: translateY(20px) scale(0.97);
+  transition: transform var(--dur-med) var(--ease);
+}
+.modal.is-open .modal__panel { transform: translateY(0) scale(1); }
+
+.modal__media {
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+.modal__media img { width: 100%; height: 100%; object-fit: cover; }
+
+.modal__body { padding: var(--sp-5); }
+.modal__title { margin-bottom: var(--sp-3); }
+.modal__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+  font-size: var(--fs-sm);
+  color: var(--c-muted);
+  margin-bottom: var(--sp-4);
+  padding-bottom: var(--sp-4);
+  border-bottom: 1px solid var(--c-line);
+}
+
+.modal__close {
+  position: absolute;
+  top: var(--sp-3);
+  right: var(--sp-3);
+  width: var(--tap-min);
+  height: var(--tap-min);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--dur-fast) var(--ease),
+              background var(--dur-fast) var(--ease);
+  z-index: 2;
+}
+.modal__close:hover {
+  transform: rotate(90deg);
+  background: var(--c-pink-200);
+}
+
+
+/* ==========================================================================
+   15. Lightbox
+   --------------------------------------------------------------------------
+   Full-screen image viewer. Dark backdrop, centred image, caption below.
+   Mobile: image max-height 70vh so there's room for the caption and
+   close button without scrolling.
+   ========================================================================== */
+
+.is-zoomable { cursor: zoom-in; }
+
+.lightbox {
+  position: fixed;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  background: rgba(26, 35, 64, 0.9);
+  padding: var(--sp-4);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--dur-med) var(--ease),
+              visibility var(--dur-med) var(--ease);
+  z-index: 1100;
+}
+.lightbox.is-open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.lightbox__panel {
+  position: relative;
+  max-width: 96vw;
+  max-height: 92vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--sp-3);
+  transform: scale(0.96);
+  transition: transform var(--dur-med) var(--ease);
+}
+.lightbox.is-open .lightbox__panel { transform: scale(1); }
+
+.lightbox__img {
+  max-width: 100%;
+  max-height: 70vh;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  cursor: zoom-out;
+}
+
+.lightbox__caption {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: var(--fs-sm);
+  text-align: center;
+  max-width: 60ch;
+  padding-inline: var(--sp-3);
+}
+
+.lightbox__close {
+  position: absolute;
+  top: -48px;
+  right: 0;
+  width: var(--tap-min);
+  height: var(--tap-min);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--c-ink);
+  border: none;
+  font-size: 1.4rem;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease);
+}
+.lightbox__close:hover { transform: rotate(90deg); }
+
+
+/* ==========================================================================
+   14. Donation modal
+   --------------------------------------------------------------------------
+   Mobile: preset amounts grid switches from 4-across to 2-across so each
+   button stays readable (and above the 44px tap target).
+   ========================================================================== */
+
+.donation__amounts {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);      /* mobile: 2 columns */
+  gap: var(--sp-2);
+  margin-bottom: var(--sp-4);
+}
+.donation__amount {
+  min-height: var(--tap-min);
+  padding: 0.75rem 0.5rem;
+  border: 1.5px solid var(--c-line);
+  background: var(--c-white);
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: var(--fs-base);
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease),
+              border-color var(--dur-fast) var(--ease),
+              color var(--dur-fast) var(--ease);
+}
+.donation__amount:hover {
+  border-color: var(--c-pink-400);
+  color: var(--c-pink-500);
+}
+.donation__amount.is-selected {
+  background: var(--c-pink-400);
+  border-color: var(--c-pink-400);
+  color: var(--c-white);
+}
+
+.donation__custom-wrap { position: relative; }
+.donation__custom-wrap::before {
+  content: "$";
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--c-muted);
+  font-weight: 600;
+  pointer-events: none;
+}
+.donation__custom-wrap .form__input { padding-left: 1.75rem; }
+
+.donation__select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'><path fill='%236b6470' d='M6 8 0 0h12z'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  background-size: 10px;
+  padding-right: 2.5rem;
+}
+
+
+/* ==========================================================================
+   16. Forms
+   --------------------------------------------------------------------------
+   Input min-height matches WCAG tap target. Focus ring is a soft pink halo
+   so keyboard users see focus clearly without harsh browser defaults.
+   ========================================================================== */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+}
+.form__row {
+  display: grid;
+  grid-template-columns: 1fr;           /* mobile: stacked */
+  gap: var(--sp-3);
+}
+.form__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+  min-width: 0;                         /* prevents overflow in CSS Grid */
+}
+.form__field fieldset { border: none; padding: 0; }
+.form__field legend,
+.form__label {
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--c-muted);
+}
+.form__input {
+  min-height: var(--tap-min);
+  padding: 0.75rem 1rem;
+  border: 1.5px solid var(--c-line);
+  border-radius: var(--radius-sm);
+  background: var(--c-white);
+  font-size: var(--fs-base);            /* 16px prevents iOS zoom on focus */
+  transition: border-color var(--dur-fast) var(--ease),
+              box-shadow var(--dur-fast) var(--ease);
+}
+.form__input:focus {
+  outline: none;
+  border-color: var(--c-pink-400);
+  box-shadow: 0 0 0 4px var(--c-pink-100);
+}
+.form__input:invalid:not(:placeholder-shown) {
+  border-color: #c04a4a;
+}
+.form__submit { justify-content: center; width: 100%; }
+
+.form__success {
+  display: none;
+  padding: var(--sp-5);
+  text-align: center;
+  background: var(--c-pink-100);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--c-pink-200);
+}
+.form__success.is-visible { display: block; }
+.form__success-icon {
+  font-size: 2rem;
+  color: var(--c-pink-500);
+  margin-bottom: var(--sp-2);
+}
+
+
+/* ==========================================================================
+   17. Gallery filter
+   ========================================================================== */
+
+.gallery-filter {
+  display: flex;
+  justify-content: center;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+  margin-bottom: var(--sp-6);
+}
+.gallery-filter button {
+  min-height: var(--tap-min);
+  background: transparent;
+  border: 1.5px solid var(--c-line);
+  padding: 0.5rem 1.2rem;
+  font-size: var(--fs-sm);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: background var(--dur-fast) var(--ease),
+              border-color var(--dur-fast) var(--ease),
+              color var(--dur-fast) var(--ease);
+}
+.gallery-filter button:hover { border-color: var(--c-pink-400); }
+.gallery-filter button.is-active {
+  background: var(--c-pink-400);
+  border-color: var(--c-pink-400);
+  color: var(--c-white);
+}
+
+
+/* ==========================================================================
+   18. Footer
+   ========================================================================== */
+
+.site-footer {
+  background: var(--c-ink);
+  color: #d8d2dc;
+  padding-block: var(--sp-7) var(--sp-5);
+  margin-top: var(--sp-8);
+}
+.site-footer__grid {
+  display: grid;
+  grid-template-columns: 1fr;           /* mobile: stacked */
+  gap: var(--sp-6);
+  margin-bottom: var(--sp-6);
+}
+.site-footer h4 {
+  color: var(--c-white);
+  margin-bottom: var(--sp-3);
+  font-size: var(--fs-sm);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+.site-footer__list {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+.site-footer__list a { font-size: var(--fs-sm); }
+.site-footer__list a:hover { color: var(--c-pink-200); }
+
+.site-footer__socials { display: flex; gap: var(--sp-3); }
+.site-footer__socials a {
+  width: var(--tap-min);
+  height: var(--tap-min);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  display: grid;
+  place-items: center;
+  transition: background var(--dur-fast) var(--ease),
+              transform var(--dur-fast) var(--ease);
+}
+.site-footer__socials a:hover {
+  background: var(--c-pink-400);
+  transform: translateY(-2px);
+}
+.site-footer__socials a svg {
+  width: 18px;
+  height: 18px;
+  fill: currentColor;
+}
+
+.site-footer__bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: var(--sp-4);
+  text-align: center;
+  font-size: var(--fs-xs);
+  color: #a89fb0;
+}
+
+
+/* ==========================================================================
+   19. Animations
+   --------------------------------------------------------------------------
+   Only animate transform + opacity (GPU-accelerated properties). Animating
+   width/height/top/left triggers layout passes and destroys performance
+   on low-end mobile devices.
+   ========================================================================== */
+
+/* --- Events page — compact top section --- */
+/* No separate hero band. The page opens directly on the Upcoming Events
+   grid, so the H1 sits inside the section header itself. The top padding
+   is smaller than a normal section so visitors focus on cards, not chrome. */
+.section--events-top {
+  padding-top: var(--sp-5);
+}
+.events-page-title {
+  font-size: clamp(1.75rem, 1.2rem + 2vw, 2.75rem);
+  margin-bottom: 0;
+}
+
+/* --- Gallery hero carousel + caption --- */
+/* GALLERY HERO — BALANCED LAYOUT
+   ------------------------------------------------------------
+   Layout principle: the carousel is the visual hero, the caption
+   is the supporting label. The image gets ~2× the caption's width
+   so neither feels stretched or cramped, and both columns end at
+   the same height (align-items: stretch + carousel height cap).
+
+   Mobile: single column, caption above carousel (reading order =
+     title → description → image, matches F-pattern). */
+/* --- Gallery hero carousel + caption --- */
+/* GALLERY HERO — MATCHES HOMEPAGE HERO DIMENSIONS
+   ------------------------------------------------------------
+   The goal is for this section to feel like a twin of the homepage
+   hero: same padding rhythm, same carousel aspect ratio, same clean
+   impact, and the featured caption card is as tall as the carousel
+   (balanced two-column layout).
+
+   Key techniques:
+     - aspect-ratio on the carousel controls its height (same 16:10 on
+       mobile, 4:5 on tablet/desktop — mirrors .carousel on the home).
+     - align-items: stretch on the grid makes the pink caption card
+       grow to the full carousel height automatically.
+     - The pink background (c-pink-100) and border-left accent match
+       the homepage brand aesthetic. */
+.gallery-hero-section {
+  /* Reduced padding so the carousel sits higher on the page with less
+     empty space above and below. The hero still gets breathing room on
+     top (matching the site's vertical rhythm) but noticeably less below,
+     flowing directly into the gallery grid. */
+  padding-block: var(--sp-4) var(--sp-5);
+}
+.gallery-hero__head {
+  margin-bottom: var(--sp-3);
+}
+.gallery-hero__h1 {
+  font-size: clamp(1.75rem, 1.2rem + 2vw, 2.5rem);
+  margin-bottom: 0;
+}
+
+.gallery-hero {
+  display: grid;
+  grid-template-columns: 1fr;            /* mobile: stack */
+  gap: var(--sp-4);
+  align-items: stretch;                  /* columns match each other's height */
+  margin: 0 auto;                        /* centre the whole block */
+  max-width: 1200px;                     /* cap on ultra-wide screens so it doesn't feel unbalanced */
+}
+.gallery-hero__media {
+  min-width: 0;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;               /* centre the carousel inside its column */
+}
+.gallery-hero__carousel {
+  aspect-ratio: 16 / 10;                 /* mobile — wide & impactful, not tall */
+  width: 100%;                           /* fill the column */
+  height: 100%;                          /* fill the grid cell height */
+}
+
+/* Pink featured card — same dusty-pink as the homepage hero backdrop,
+   with a coral accent line. Sits flush to the carousel's height via
+   the grid's align-items: stretch, so both columns are always balanced. */
+.gallery-hero__caption {
+  padding: var(--sp-5);
+  background: linear-gradient(165deg, var(--c-pink-100) 0%, #f8dede 100%);
+  border-radius: var(--radius-md);
+  border-left: 3px solid var(--c-coral);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: var(--sp-2);
+}
+.gallery-hero__caption-title {
+  font-family: var(--ff-display);
+  font-size: var(--fs-xl);
+  margin: 0;
+  line-height: 1.2;
+  color: var(--c-ink);
+}
+.gallery-hero__caption-meta {
+  margin: 0;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--c-pink-500);
+  font-size: 0.72rem;
+}
+.gallery-hero__caption-text {
+  color: var(--c-ink);
+  font-size: var(--fs-sm);
+  line-height: 1.6;
+  margin: var(--sp-2) 0 0;
+  opacity: 0.8;
+}
+
+/* --- Footer logo (click = back to top) --- */
+/* Perfect circle, transparent background. The CM logo is already a
+   circular mark, so we simply contain it in a round inline-flex box
+   with border-radius: 50%. No white square, no padding, no fill —
+   the logo sits directly on the dark footer just like the header logo. */
+.footer-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  margin-bottom: var(--sp-4);
+  background: transparent;
+  border-radius: 50%;                   /* perfect circle container */
+  overflow: hidden;                     /* keep logo inside the circle */
+  transition: transform var(--dur-fast) var(--ease),
+              opacity var(--dur-fast) var(--ease);
+  opacity: 0.95;
+}
+.footer-logo:hover,
+.footer-logo:focus-visible {
+  transform: translateY(-3px);
+  opacity: 1;
+}
+.footer-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;                  /* no distortion, no cropping */
+  border-radius: 50%;                   /* belt-and-braces: round the image too */
+}
+
+/* --- Marquee items as anchors --- */
+/* When partner logos become <a> elements, inherit text styles and show a
+   clear pointer cursor so it's obvious they're clickable. */
+.marquee__item {
+  color: inherit;                     /* don't use the pink link colour */
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.hero__eyebrow,
+.hero__title,
+.hero__lead,
+.hero__actions,
+.hero .carousel {
+  animation: fade-up 800ms var(--ease) both;
+}
+.hero__title   { animation-delay: 80ms;  }
+.hero__lead    { animation-delay: 160ms; }
+.hero__actions { animation-delay: 240ms; }
+.hero .carousel { animation-delay: 120ms; }
+
+/* Scroll-reveal (class toggled by IntersectionObserver in JS) */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 700ms var(--ease),
+              transform 700ms var(--ease);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* ==========================================================================
+   20. Tablet breakpoint (min-width: 768px)
+   --------------------------------------------------------------------------
+   At 768px the viewport is wide enough to show content side-by-side. This
+   is where the big layout shifts happen: hero grid becomes 2 columns, nav
+   list becomes horizontal, about intro goes side-by-side, etc.
+   ========================================================================== */
+
+@media (min-width: 768px) {
+
+  .container { padding-inline: var(--sp-5); }
+  .section { padding-block: var(--sp-9); }
+
+  /* Nav bar — horizontal list replaces the mobile drawer */
+  :root { --nav-height: 72px; }
+  .nav__toggle { display: none; }
+  .nav__logo { font-size: 1.1rem; }
+  .nav__logo img { height: 40px; }
+
+  .nav__list {
+    position: static;
+    flex-direction: row;
+    gap: var(--sp-6);
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+    transform: none;
+    padding: 0;
+  }
+  .nav__list li { border: 0; }
+  .nav__link {
+    min-height: auto;
+    padding-block: var(--sp-2);
+    padding-inline: 0;
+    font-size: var(--fs-sm);
+    position: relative;
+  }
+  /* Animated underline — pseudo-element avoids layout shift from borders */
+  .nav__link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--c-pink-400);
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform var(--dur-med) var(--ease);
+  }
+  .nav__link:hover::after,
+  .nav__link[aria-current="page"]::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  /* Hero: two-column grid */
+  .hero { padding-block: var(--sp-8); }
+  .hero__grid {
+    grid-template-columns: 1.1fr 1fr;
+    gap: var(--sp-7);
+  }
+  .carousel { aspect-ratio: 4 / 5; }
+  .carousel__caption {
+    bottom: var(--sp-5);
+    left: var(--sp-5);
+    padding: var(--sp-3) var(--sp-4);
+    font-size: var(--fs-xs);
+  }
+  .carousel__btn {
+    width: 44px;
+    height: 44px;
+    font-size: 1.4rem;
+  }
+  .carousel__btn--prev { left: var(--sp-3); }
+  .carousel__btn--next { right: var(--sp-3); }
+
+  /* About intro — circular portrait + text side by side */
+  .about-intro {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-7);
+  }
+  .about-intro__media { max-width: 360px; }
+
+  /* Contact section — image + form side by side */
+  .contact {
+    grid-template-columns: 1.3fr 1fr;
+    gap: var(--sp-7);
+    padding: var(--sp-7);
+  }
+
+  /* Forms — 2-column rows where appropriate */
+  .form__row { grid-template-columns: 1fr 1fr; }
+  .form__submit { width: auto; }
+
+  /* Donation amount grid — 4 across now there's room */
+  .donation__amounts { grid-template-columns: repeat(4, 1fr); }
+
+  /* Cards slightly larger on tablet */
+  .card__body { padding: var(--sp-5); }
+  .card__title { font-size: 1.35rem; }
+
+  /* Section headings get bigger dots */
+  .section__head::after { font-size: 0.75rem; }
+
+  /* Support section looser padding */
+  .support { padding: var(--sp-7); }
+
+  /* Footer — 3 columns */
+  .site-footer__grid {
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: var(--sp-6);
+  }
+
+  /* Feature image taller ratio */
+  .feature-image { aspect-ratio: 21 / 9; }
+
+  /* Marquee items larger on tablet */
+  .marquee__item { width: 180px; height: 90px; padding: var(--sp-4) var(--sp-5); }
+  .marquee__item img { max-height: 50px; max-width: 140px; }
+  .marquee__track { gap: var(--sp-6); animation-duration: 30s; }
+
+  /* Modal body more breathing room */
+  .modal__body { padding: var(--sp-6); }
+
+  /* Gallery hero — two columns, with the carousel clearly the star.
+     Ratio 1fr : 2fr gives the slideshow about twice the width of the
+     featured caption. The aspect ratio changes to 3:2 (wider and more
+     prominent than the previous 4:5) so images feel generous without
+     pushing the section below the fold. The carousel caps at 560px tall
+     so the whole hero still fits one screen on a standard laptop. */
+  .gallery-hero {
+    grid-template-columns: 1fr 2fr;
+    gap: var(--sp-5);
+  }
+  .gallery-hero__carousel {
+    aspect-ratio: 3 / 2;                 /* wider, more cinematic than 4/5 */
+    max-height: 560px;                   /* height cap for wide screens */
+    width: 100%;
+  }
+  .gallery-hero__caption {
+    padding: var(--sp-5);
+    max-height: 560px;                   /* matches the carousel cap */
+  }
+  .gallery-hero__caption-title { font-size: var(--fs-2xl); }
+  .gallery-hero__caption-text { font-size: var(--fs-base); }
+
+  /* Footer logo slightly bigger on tablet — still a perfect circle */
+  .footer-logo { width: 72px; height: 72px; }
+}
+
+
+/* ==========================================================================
+   21. Desktop breakpoint (min-width: 1024px)
+   --------------------------------------------------------------------------
+   At 1024px there's enough horizontal space for maximum visual richness:
+   bigger carousel arrows, wider container padding, looser section rhythm.
+   ========================================================================== */
+
+@media (min-width: 1024px) {
+
+  .container { padding-inline: var(--sp-6); }
+
+  /* Hero is allowed to use the full vertical rhythm */
+  .hero { padding-block: var(--sp-9) var(--sp-8); }
+  .hero__grid { gap: var(--sp-8); }
+
+  /* Carousel arrows larger on desktop where there's room */
+  .carousel__btn { width: 48px; height: 48px; font-size: 1.5rem; }
+
+  /* Marquee items with more breathing room */
+  .marquee__item { width: 200px; height: 100px; }
+  .marquee__item img { max-height: 60px; max-width: 160px; }
+}

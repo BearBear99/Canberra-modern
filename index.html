@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Canberra Modern celebrates the capital's mid and late twentieth century architecture through tours, talks and community events.">
+  <title>Canberra Modern — Celebrating mid-century Canberra</title>
+
+  <!--
+    Preconnect to the font host so the browser can start the TLS handshake
+    before the CSS is parsed. Saves roughly 200 ms on cold loads.
+  -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
+  <link rel="icon" type="image/png" href="assets/images/cm-logo.png">
+</head>
+<body>
+
+  <!-- Skip-to-content link for keyboard/screen-reader users (WCAG 2.4.1). -->
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <!-- ===================================================================
+       Site header (reused on every page).
+       Sticky, frosted-glass background (see styles.css section 6).
+       =================================================================== -->
+  <header class="site-header">
+    <nav class="nav container" aria-label="Primary">
+      <a class="nav__logo" href="index.html" aria-label="Canberra Modern home">
+        <img src="assets/images/cm-logo.png" alt="" data-no-lightbox>
+        <span>Canberra Modern</span>
+      </a>
+
+      <!-- Hamburger button — visible on mobile only via CSS. -->
+      <button class="nav__toggle" type="button"
+              aria-expanded="false" aria-controls="primary-menu"
+              aria-label="Toggle menu">
+        <span class="nav__toggle-bar"></span>
+        <span class="nav__toggle-bar"></span>
+        <span class="nav__toggle-bar"></span>
+      </button>
+
+      <ul id="primary-menu" class="nav__list" role="list">
+        <li><a class="nav__link" href="index.html" aria-current="page">Home</a></li>
+        <li><a class="nav__link" href="about.html">About</a></li>
+        <li><a class="nav__link" href="events.html">Events</a></li>
+        <li><a class="nav__link" href="gallery.html">Gallery</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+
+    <!-- =================================================================
+         Hero section with 5-slide auto-advancing carousel.
+         See initHeroCarousel() in script.js for the JS behaviour.
+         Images have data-no-lightbox: the carousel handles their clicks.
+         ================================================================= -->
+    <section class="hero">
+      <div class="container hero__grid">
+        <div class="hero__copy">
+          <p class="hero__eyebrow">Est. 2016 · Canberra, ACT</p>
+          <h1 class="hero__title">
+            Celebrating the <span class="highlight">mid-century</span> capital.
+          </h1>
+          <p class="hero__lead">
+            Canberra Modern is a volunteer-led organisation dedicated to raising
+            awareness of Canberra's mid-century modern architecture and landscape.
+            Through tours, talks and public programs, we connect the community with
+            the city's built environment and champion its ongoing conservation.
+          </p>
+          <div class="hero__actions">
+            <a class="btn btn--primary" href="events.html">Explore Events →</a>
+            <a class="btn btn--ghost" href="about.html">About us</a>
+          </div>
+        </div>
+
+        <!--
+          5 slides chosen for architectural variety (Parliament House,
+          Cameron Offices, Modernist Church, Telstra Tower, Round Restaurant).
+          Five is the Baymard-recommended maximum for a hero carousel —
+          beyond five, user engagement with later slides drops sharply.
+        -->
+        <div class="carousel"
+             role="region" aria-roledescription="carousel"
+             aria-label="Featured Canberra modernist landmarks">
+          <div class="carousel__track">
+            <div class="carousel__slide is-active"
+                 role="group" aria-roledescription="slide" aria-label="1 of 5">
+              <img src="assets/images/parliament-house.webp"
+                   alt="Parliament House at sunset — the pink sky silhouetting Romaldo Giurgola's 1988 civic landmark."
+                   data-caption-title="Parliament House at Sunset">
+            </div>
+            <div class="carousel__slide"
+                 role="group" aria-roledescription="slide" aria-label="2 of 5"
+                 aria-hidden="true">
+              <img src="assets/images/cameron-offices.jpeg"
+                   alt="The Cameron Offices in Belconnen — John Andrews' 1976 brutalist masterpiece."
+                   data-caption-title="Cameron Offices">
+            </div>
+            <div class="carousel__slide"
+                 role="group" aria-roledescription="slide" aria-label="3 of 5"
+                 aria-hidden="true">
+              <img src="assets/images/homepage.png"
+                   alt="Homepage featured image of Canberra Modern architecture — Telstra Tower on Black Mountain, a 1980 landmark of communications engineering."
+                   data-caption-title="Black Mountain Telstra Tower">
+            </div>
+            <div class="carousel__slide"
+                 role="group" aria-roledescription="slide" aria-label="4 of 5"
+                 aria-hidden="true">
+              <img src="assets/images/cameron-pods.webp"
+                   alt="The Cameron Offices' iconic glass observation pods — a late-modernist experiment in form and light."
+                   data-caption-title="Cameron Glass Pods">
+            </div>
+            <div class="carousel__slide"
+                 role="group" aria-roledescription="slide" aria-label="5 of 5"
+                 aria-hidden="true">
+              <img src="assets/images/round-restaurant.jpg"
+                   alt="A round mid-century restaurant — the spirit of 1960s optimism in concrete and glass."
+                   data-caption-title="The Round Restaurant">
+            </div>
+          </div>
+
+          <!--
+            Dynamic caption chip — JS updates the text from each slide's
+            data-caption-title as it becomes active.
+          -->
+          <span class="carousel__caption" data-caption-target="title">Parliament House at Sunset</span>
+
+          <button class="carousel__btn carousel__btn--prev" type="button"
+                  aria-label="Previous slide">‹</button>
+          <button class="carousel__btn carousel__btn--next" type="button"
+                  aria-label="Next slide">›</button>
+
+          <div class="carousel__dots" role="tablist" aria-label="Slide indicators">
+            <button class="carousel__dot is-active" type="button"
+                    aria-label="Go to slide 1"></button>
+            <button class="carousel__dot" type="button"
+                    aria-label="Go to slide 2"></button>
+            <button class="carousel__dot" type="button"
+                    aria-label="Go to slide 3"></button>
+            <button class="carousel__dot" type="button"
+                    aria-label="Go to slide 4"></button>
+            <button class="carousel__dot" type="button"
+                    aria-label="Go to slide 5"></button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- =================================================================
+         Upcoming events — three featured cards on the home page.
+         ================================================================= -->
+    <section class="section section--soft">
+      <div class="container">
+        <header class="section__head reveal">
+          <span class="section__eyebrow">What's on</span>
+          <h2>Upcoming Events</h2>
+        </header>
+
+        <div class="card-grid">
+
+          <article class="card reveal">
+            <div class="card__media">
+              <img src="assets/images/event-gallery.jpeg"
+                   alt="Architecture talk at a previous Canberra Modern event.">
+              <span class="card__tag">Talk</span>
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">Architecture Talk: Iwan Iwanoff</h3>
+              <p class="u-event-desc">
+                Author Warren Andersen presents a review of the Bulgarian-born
+                modernist architect's design legacy through recollections and
+                images from those who worked with and knew him.
+              </p>
+              <div class="card__meta">
+                <span><span class="icon" aria-hidden="true">●</span> 18 May 2026</span>
+                <span><span class="icon" aria-hidden="true">●</span> 10 AM – 12 PM</span>
+                <span><span class="icon" aria-hidden="true">●</span> 17 Tasmania Circle, Forrest</span>
+              </div>
+              <div class="card__actions">
+                <button class="btn btn--primary"
+                        data-book-trigger
+                        data-title="Architecture Talk: Iwan Iwanoff"
+                        data-date="18 May 2026"
+                        data-time="10 AM – 12 PM"
+                        data-location="17 Tasmania Circle, Forrest"
+                        data-image="assets/images/event-gallery.jpeg">
+                  Book Now
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <article class="card reveal">
+            <div class="card__media">
+              <img src="assets/images/cameron-offices.jpeg"
+                   alt="The Cameron Offices — site of the upcoming building tour.">
+              <span class="card__tag">Tour</span>
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">Cameron Offices Tour</h3>
+              <p class="u-event-desc">
+                A guided walkthrough of one of Canberra's most striking
+                late-modernist buildings. Led by architects and heritage
+                advocates, with access to spaces not usually open to the public.
+              </p>
+              <div class="card__meta">
+                <span><span class="icon" aria-hidden="true">●</span> 14 Mar 2026</span>
+                <span><span class="icon" aria-hidden="true">●</span> 10 AM – 12 PM</span>
+                <span><span class="icon" aria-hidden="true">●</span> Cameron Offices, Belconnen</span>
+              </div>
+              <div class="card__actions">
+                <button class="btn btn--primary"
+                        data-book-trigger
+                        data-title="Cameron Offices Tour"
+                        data-date="14 Mar 2026"
+                        data-time="10 AM – 12 PM"
+                        data-location="Cameron Offices, Belconnen"
+                        data-image="assets/images/cameron-offices.jpeg">
+                  Book Now
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <article class="card reveal">
+            <div class="card__media">
+              <img src="assets/images/event-parliament.png"
+                   alt="CM members inside Parliament House during a previous tour.">
+              <span class="card__tag">Tour</span>
+            </div>
+            <div class="card__body">
+              <h3 class="card__title">Parliament House Architecture Tour</h3>
+              <p class="u-event-desc">
+                Explore Romaldo Giurgola's Parliament House — one of the
+                most ambitious late-modernist civic projects of the
+                twentieth century — with a specialist heritage architect.
+              </p>
+              <div class="card__meta">
+                <span><span class="icon" aria-hidden="true">●</span> 22 Jun 2026</span>
+                <span><span class="icon" aria-hidden="true">●</span> 2 PM – 4 PM</span>
+                <span><span class="icon" aria-hidden="true">●</span> Parliament House, Canberra</span>
+              </div>
+              <div class="card__actions">
+                <button class="btn btn--primary"
+                        data-book-trigger
+                        data-title="Parliament House Architecture Tour"
+                        data-date="22 Jun 2026"
+                        data-time="2 PM – 4 PM"
+                        data-location="Parliament House, Canberra"
+                        data-image="assets/images/event-parliament.png">
+                  Book Now
+                </button>
+              </div>
+            </div>
+          </article>
+
+        </div>
+
+        <p class="u-text-center u-mt-6">
+          <a class="btn btn--ghost" href="events.html">See all events</a>
+        </p>
+      </div>
+    </section>
+
+
+    <!-- =================================================================
+         Newsletter / contact CTA.
+         ================================================================= -->
+    <section class="section">
+      <div class="container">
+        <div class="contact reveal">
+          <div class="contact__image">
+            <img src="assets/images/shopping-centre.jpeg"
+                 alt="Canberra's modernist shopping precinct — the kind of architecture CM works to preserve.">
+          </div>
+          <div>
+            <span class="section__eyebrow">Stay in touch</span>
+            <h2>Join our community</h2>
+            <p class="u-muted u-my-sm">
+              Get occasional emails about upcoming tours, talks and new
+              stories about Canberra's modernist heritage.
+            </p>
+
+            <form class="form" novalidate>
+              <div class="form__field">
+                <label class="form__label" for="home-name">Name</label>
+                <input class="form__input" id="home-name" type="text"
+                       name="name" placeholder="Your name" required>
+              </div>
+              <div class="form__field">
+                <label class="form__label" for="home-email">Email</label>
+                <input class="form__input" id="home-email" type="email"
+                       name="email" placeholder="you@example.com" required>
+              </div>
+              <div class="form__field">
+                <label class="form__label" for="home-message">Message</label>
+                <input class="form__input" id="home-message" type="text"
+                       name="message" placeholder="Say hello">
+              </div>
+              <button type="submit" class="btn btn--primary form__submit">
+                Send message
+              </button>
+            </form>
+
+            <div class="form__success" role="status" aria-live="polite">
+              <div class="form__success-icon">✓</div>
+              <h3 class="u-mb-2">Message sent!</h3>
+              <p class="u-muted">Thanks for reaching out. We'll be in touch soon.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- ===================================================================
+       Booking modal — shared across every page. Populated by JS with the
+       data-* attributes from whichever "Book Now" button was clicked.
+       =================================================================== -->
+  <div id="booking-modal" class="modal"
+       role="dialog" aria-modal="true"
+       aria-labelledby="modal-title" aria-hidden="true">
+    <div class="modal__panel">
+      <button class="modal__close" type="button" aria-label="Close booking form">×</button>
+      <div class="modal__media">
+        <img data-book-image src="" alt="" data-no-lightbox>
+      </div>
+      <div class="modal__body">
+        <h2 class="modal__title" id="modal-title" data-book-title>Event title</h2>
+        <div class="modal__meta">
+          <span>📅 <span data-book-date></span></span>
+          <span>🕓 <span data-book-time></span></span>
+          <span>📍 <span data-book-location></span></span>
+        </div>
+
+        <form class="form" novalidate>
+          <div class="form__field">
+            <label class="form__label" for="book-name">Full name</label>
+            <input class="form__input" id="book-name" type="text"
+                   name="name" placeholder="Your name" required>
+          </div>
+          <div class="form__field">
+            <label class="form__label" for="book-email">Email</label>
+            <input class="form__input" id="book-email" type="email"
+                   name="email" placeholder="you@example.com" required>
+          </div>
+          <div class="form__row">
+            <div class="form__field">
+              <label class="form__label" for="book-phone">Phone (optional)</label>
+              <input class="form__input" id="book-phone" type="tel"
+                     name="phone" placeholder="04xx xxx xxx">
+            </div>
+            <div class="form__field">
+              <label class="form__label" for="book-tickets">Tickets</label>
+              <input class="form__input" id="book-tickets" type="number"
+                     name="tickets" min="1" max="10" value="1" required>
+            </div>
+          </div>
+          <button type="submit" class="btn btn--primary form__submit">
+            Confirm booking
+          </button>
+        </form>
+
+        <div class="form__success" role="status" aria-live="polite">
+          <div class="form__success-icon">✓</div>
+          <h3 class="u-mb-2">Booking confirmed!</h3>
+          <p class="u-muted">A confirmation email is on its way. We can't wait to see you.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ===================================================================
+       Lightbox — shared on every page.
+       =================================================================== -->
+  <div id="lightbox" class="lightbox"
+       role="dialog" aria-modal="true"
+       aria-label="Enlarged image view" aria-hidden="true">
+    <div class="lightbox__panel">
+      <button class="modal__close lightbox__close" type="button"
+              aria-label="Close enlarged image">×</button>
+      <img class="lightbox__img" src="" alt="" data-no-lightbox>
+      <p class="lightbox__caption"></p>
+    </div>
+  </div>
+
+
+  <!-- ===================================================================
+       Footer — reused on every page. Required UC credit line on line 2.
+       =================================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="site-footer__grid">
+        <div>
+          <a href="#top" class="footer-logo" data-scroll-top aria-label="Back to top">
+            <img src="assets/images/cm-logo.png" alt="Canberra Modern" data-no-lightbox>
+          </a>
+          <h4>Canberra Modern</h4>
+          <p class="u-footer-blurb">
+            A volunteer-led organisation celebrating Canberra's mid and
+            late-twentieth-century architecture, streetscapes and landscapes.
+          </p>
+          <!--
+            Real social links. target="_blank" opens in a new tab;
+            rel="noopener noreferrer" closes the "tab-napping" security hole.
+          -->
+          <div class="site-footer__socials u-socials-mt">
+            <a href="https://www.instagram.com/canberra_modern"
+               target="_blank" rel="noopener noreferrer"
+               aria-label="Canberra Modern on Instagram">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 2.2c3.2 0 3.6 0 4.85.07 1.17.05 1.8.25 2.23.42.56.22.96.48 1.38.9.42.42.68.82.9 1.38.17.42.37 1.06.42 2.23.06 1.25.07 1.62.07 4.85s0 3.6-.07 4.85c-.05 1.17-.25 1.8-.42 2.23a3.7 3.7 0 0 1-.9 1.38 3.7 3.7 0 0 1-1.38.9c-.42.17-1.06.37-2.23.42-1.25.06-1.62.07-4.85.07s-3.6 0-4.85-.07c-1.17-.05-1.8-.25-2.23-.42a3.7 3.7 0 0 1-1.38-.9 3.7 3.7 0 0 1-.9-1.38c-.17-.42-.37-1.06-.42-2.23C2.2 15.6 2.2 15.24 2.2 12s0-3.6.07-4.85c.05-1.17.25-1.8.42-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.17 1.06-.37 2.23-.42C8.4 2.21 8.76 2.2 12 2.2M12 0C8.74 0 8.33 0 7.05.07c-1.28.06-2.15.26-2.91.55A5.9 5.9 0 0 0 2 2.14 5.9 5.9 0 0 0 .62 4.14C.33 4.9.13 5.77.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.28.26 2.15.55 2.91a5.9 5.9 0 0 0 1.52 2.14 5.9 5.9 0 0 0 2.14 1.52c.76.29 1.63.49 2.91.55 1.28.06 1.69.07 4.95.07s3.67-.01 4.95-.07c1.28-.06 2.15-.26 2.91-.55a5.9 5.9 0 0 0 2.14-1.52 5.9 5.9 0 0 0 1.52-2.14c.29-.76.49-1.63.55-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.28-.26-2.15-.55-2.91a5.9 5.9 0 0 0-1.52-2.14A5.9 5.9 0 0 0 19.86.62c-.76-.29-1.63-.49-2.91-.55C15.67.01 15.26 0 12 0Zm0 5.84a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32Zm0 10.16a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm6.4-11.88a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88Z"/>
+              </svg>
+            </a>
+            <a href="https://www.facebook.com/share/1B2ZvS6A5j/"
+               target="_blank" rel="noopener noreferrer"
+               aria-label="Canberra Modern on Facebook">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M24 12a12 12 0 1 0-13.88 11.85v-8.38H7.08V12h3.04V9.36c0-3 1.79-4.67 4.53-4.67 1.31 0 2.69.24 2.69.24v2.96h-1.52c-1.5 0-1.96.93-1.96 1.88V12h3.33l-.53 3.47h-2.8v8.38A12 12 0 0 0 24 12Z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div>
+          <h4>Explore</h4>
+          <ul class="site-footer__list" role="list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="events.html">Events</a></li>
+            <li><a href="gallery.html">Gallery</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul class="site-footer__list" role="list">
+            <li>
+              <a href="https://www.instagram.com/canberra_modern"
+                 target="_blank" rel="noopener noreferrer">Instagram</a>
+            </li>
+            <li>
+              <a href="https://www.facebook.com/share/1B2ZvS6A5j/"
+                 target="_blank" rel="noopener noreferrer">Facebook</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="site-footer__bottom">
+        <p>© <span data-year>2026</span> Canberra Modern Incorporated. All rights reserved.</p>
+        <p class="u-bottom-credit">
+          This website was produced by students in the Faculty of Arts &amp; Design,
+          University of Canberra, 2026.
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/script.js" defer></script>
+</body>
+</html>

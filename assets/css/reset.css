@@ -1,0 +1,85 @@
+/* ==========================================================================
+   reset.css
+   A lightweight modern CSS reset.
+   Based on Andy Bell's "A (more) modern CSS reset" (2023) — adapted.
+   Source: https://piccalil.li/blog/a-more-modern-css-reset/
+   ========================================================================== */
+
+/* Use border-box sizing everywhere so padding/border don't bloat widths */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Remove default margins — we'll set them intentionally in styles.css */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* Prevent font size inflation on mobile landscape orientation */
+html {
+  -moz-text-size-adjust: none;
+  -webkit-text-size-adjust: none;
+  text-size-adjust: none;
+  scroll-behavior: smooth;
+}
+
+/* Give body sensible defaults */
+body {
+  min-height: 100vh;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Balance text wrapping on headings for nicer line breaks */
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.2;
+  text-wrap: balance;
+}
+
+/* Make images responsive and remove their inline-block bottom gap */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Inherit fonts for form controls (browsers don't do this by default) */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+/* Remove default list styling where we use <ul>/<ol> for nav or layout */
+ul[role="list"],
+ol[role="list"] {
+  list-style: none;
+}
+
+/* Make anchors inherit color unless styled otherwise */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* Respect users who prefer reduced motion — disable our animations */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
