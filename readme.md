@@ -1,27 +1,41 @@
 # Canberra Modern — Responsive Website
 
 **Unit:** 11056 Front-end Web Design
-**Semester:** 1, 2026 · BRUCE [ON-CAMPUS]
 **Student ID:** U3292103
 **Repo:** https://github.com/BearBear99/Canberra-modern.git
 
 ---
 
-## 1. Project overview
+## 1. Project Overview
 
-This project is a responsive website redesign for **Canberra Modern** — a small volunteer-led organisation that celebrates the city's mid and late-twentieth-century architecture through tours, talks and community events (Canberra Modern, n.d.). The existing CM site is acknowledged by its authors as dated, so the brief across all three assessments was to transform its source content into a more engaging and visually coherent presence. Assessment 3 is the implementation stage: turning the Figma prototype from Assessment 2 into a working front-end built in semantic HTML5, CSS3 and vanilla JavaScript, with no front-end libraries or templates.
+This project presents a complete responsive redesign and front-end implementation for **Canberra Modern**, a small volunteer-led organisation dedicated to celebrating Canberra’s mid- and late-twentieth-century modernist architecture through guided tours, talks, and community events (Canberra Modern, n.d.).
 
-The site has four pages — **Home**, **About**, **Events** and **Gallery** — plus three different modal components (booking, donation, image lightbox) and an auto-advancing hero carousel. All CSS lives in a single external stylesheet (with a small CSS reset merged at the top), all JS in a single file. Nothing is imported from a CDN except the two Google Fonts used for display and body type.
+The existing website was acknowledged by its creators as dated and in need of modernisation. In response to the assessment brief, the redesign transforms the source content into a visually coherent, engaging, and accessible digital presence. **Assessment 3** focuses on technical implementation: translating the high-fidelity Figma prototype developed in Assessment 2 into a fully functional, semantic front-end using **HTML5, CSS3, and vanilla JavaScript**.
+
+### Key Features
+- Four-page responsive website: **Home**, **About**, **Events**, and **Gallery**.
+- Auto-advancing hero carousel on the Home page.
+- Three custom modal components: event booking, donation, and image lightbox.
+- Fully responsive design optimised for mobile, tablet, and desktop viewports.
+- No external front-end frameworks, libraries, or templates were used — all functionality is achieved with vanilla JavaScript and custom CSS.
+- All styles contained in a single external stylesheet (with integrated CSS reset); all scripts in a single JavaScript file.
+- Typography utilises two Google Fonts only (no other external dependencies).
+
+### Technical Approach and Constraints
+The implementation adheres strictly to the assessment requirements for semantic HTML, progressive enhancement, and clean separation of concerns. Accessibility, performance, and maintainability were prioritised throughout development. The result is a lightweight, fast-loading website that maintains visual fidelity to the Figma prototype while meeting modern web standards.
 
 ---
-
 ## 2. Reflection on the prototype → implementation journey
 
 ### What I kept from my Figma prototype
 
-The **dusty pink, cream and navy palette** pulled from the CM logo was the backbone of the identity from the first moodboard in Assessment 1, and I carried it through unchanged. The circular portrait treatment on the About page, the card-based event listings, the section–soft alternating backgrounds, and the dotted-line typographic flourishes between sections all come straight from the Figma work.
+## 2. Reflection on the Prototype to Implementation Journey
 
-These choices came out of the Visual Direction research in Assessment 1, where I identified mid-century modernism as the aesthetic anchor. That period was defined by restraint, grid-based layouts, humanist sans-serif typography paired with sturdy display serifs, and muted earth-tone palettes (Lupton, 2010), and I wanted the site to feel like it belonged to its subject matter rather than imposing a generic tech aesthetic on it.
+Translating the high-fidelity Figma prototype into a functional website revealed important differences between static design and real-world web delivery. While the overall mid-century modernist direction and layout structure were preserved, several refinements were required to ensure the site performed well across devices and browsers.
+
+The most significant adaptation concerned the colour palette. Although the original prototype featured a dusty pink, white and brown scheme, only **#F0959C** (dusty pink) was retained as the primary accent colour. Cleaner visual hierarchy, and better accessibility compliance (WCAG AA).
+
+Typography also required substantial revision. Several font sizes, weights, and line-heights that appeared refined in Figma produced poor readability and spacing on actual devices. These were recalibrated using a modular scale, with increased attention to x-height, leading, and responsive behaviour. Minor simplifications were made to decorative dotted lines and spacing to optimise rendering performance and responsive consistency.
 
 ### What I improved on the prototype
 
