@@ -88,22 +88,21 @@ Every page uses `<header>`, `<nav>`, `<main>`, `<section>`, `<article>`, `<figur
 
 I leaned heavily on **CSS custom properties** to define design tokens — colour, spacing, type scale, shadow presets, motion easing — in a single `:root` block at the top of the stylesheet. This is the CSS equivalent of the DRY principle (Frain, 2020): to rethemeise the whole site I change about twelve values. The stylesheet is organised into twenty-one labelled sections with a navigation comment block at the top, so any future maintainer can find what they need quickly.
 
-**The stylesheet is written mobile-first.** All base declarations outside `@media` queries target phones (320–480 px); larger screens progressively enhance the layout via `@media (min-width: 768px)` (tablet) and `@media (min-width: 1024px)` (desktop). Writing mobile-first forces me to prioritise the smallest viewport first — where content hierarchy matters most — and keeps the CSS-parsing cost low on the devices that can least afford it (Marcotte, 2010). Every interactive element meets the WCAG 2.5.5 minimum touch target of 44 × 44 pixels, enforced via a `--tap-min` custom property.
-
-For layout I used **CSS Grid** where I needed 2D control (card grids, footer columns, hero split, donation amount buttons) and **Flexbox** for 1D component layouts (nav bar, button rows, form fields, marquee track). I made deliberate use of `grid-template-columns: repeat(auto-fit, minmax(260px, 1fr))` so the card grids reflow to whatever viewport is presented without needing per-breakpoint media queries for column count — this is sometimes called "intrinsic web design" (Marquis, 2018) and it's more resilient than fixed breakpoints. Combined with `clamp()` fluid typography, most of the responsive behaviour is achieved without media queries at all.
+**The stylesheet is written mobile-first.** I relied heavily on CSS custom properties to define all design tokens (colour, spacing, typography scale, shadows, and motion) in a single `:root` block. This DRY approach allows complete re-theming by changing roughly twelve values (Frain, 2020). The stylesheet is organised into twenty-one labelled sections with a top navigation comment block for easy maintenance.
+Written mobile-first, base styles target small viewports (320–480 px), with progressive enhancements via @media (min-width: 768px) (tablet) and @media (min-width: 1024px) (desktop) (Marcotte, 2010). All interactive elements satisfy the WCAG 2.5.5 44 × 44 px touch target.
+CSS Grid handles two-dimensional layouts (card grids, footer, hero, donation buttons) while Flexbox manages one-dimensional components (nav, forms, marquee). I used grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) for intrinsically responsive grids (Marquis, 2018), combined with clamp() for fluid typography, minimising media queries.
 
 Advanced techniques I deliberately used:
-- **`backdrop-filter`** on the sticky header for a frosted-glass effect that reads well over any content the user is scrolling past.
-- **`mask-image`** on the marquee to fade the left and right edges, so logos drift in and out of view rather than popping on at the container boundary.
-- **`aspect-ratio`** everywhere (carousel, video embed, feature images) instead of the old `padding-top: 56.25%` hack.
-- **Pseudo-elements** for the decorative dotted section dividers, button underlines, and dropdown arrow — no extra markup needed.
-- **`animation-play-state: paused`** to pause the marquee on hover without needing JavaScript.
-
+- **`backdrop-filter`** for a frosted-glass sticky header.
+- **`mask-image`** for smooth marquee edge fades.
+- **`aspect-ratio`** for consistent media proportions.
+- **Pseudo-elements** for decorative dividers, underlines, and arrows.
+- **`animation-play-state: paused`** to pause the marquee on hover without JavaScript.
 ### JavaScript
 
 I kept JS to the minimum needed: nine feature modules wrapped in an IIFE, each guarded by a feature-presence check so the single file can safely load on every page. I wrote a small reusable `createModalController` helper to DRY the open/close/focus/keyboard logic shared by three different modals — writing that boilerplate three separate times would have been the exact kind of repetition the rubric penalises.
 
-The **carousel** respects `prefers-reduced-motion` (auto-advance is disabled for users who've asked for less motion), pauses when the browser tab isn't visible (via `visibilitychange`), and resets its timer when a user clicks an arrow or dot so it doesn't immediately jump forward.
+The **carousel** fully respects `prefers-reduced-motion` , disables auto-advance for affected users, pauses on (via `visibilitychange`) when the tab is inactive, and resets its timer after manual interaction with arrows or dots.
 
 The **lightbox** is attached to every `<img>` in `<main>`, except those marked `data-no-lightbox` (carousel slides, marquee logos) or nested inside an existing modal. Images become keyboard-accessible via `tabindex="0"` and `role="button"` and respond to both click and Enter/Space keys.
 
