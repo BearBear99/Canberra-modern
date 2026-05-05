@@ -45,13 +45,17 @@ On the homepage, I redesigned the project card layout after determining that the
 The Events page underwent extensive changes. The original colour scheme and layout felt unrefined, so I introduced a new “Upcoming Events” category at the top and adjusted typography, spacing, and overall organisation for better clarity and flow.
 The Footer was entirely redesigned. The prototype version lacked sufficient navigation links and felt incomplete; I therefore created a more comprehensive footer that includes direct links to Home, About, and Gallery, along with additional functional sections. This greatly improves site-wide navigation and user experience.
 
-### What I'd do differently next time
+### What I’d Do Differently Next Time
 
-While satisfied with the final website, the development process revealed several areas for improvement.
-Next time, I would create a more refined and thoroughly tested Figma prototype before starting to code. My preference for an iterative, code-first approach led to substantial mid-project redesigns of the homepage cards, Events page layout, and Footer, resulting in unnecessary rework.
-I would also conduct formal user testing at the mid-fidelity stage rather than relying on informal checks. This would have identified UX issues earlier, particularly with the booking modal and navigation.
-Additionally, I would establish a more structured component library and complete design token system from the outset, instead of allowing them to evolve organically.
-Finally, I would prioritise performance optimisation and accessibility auditing earlier in the build. These adjustments would improve efficiency and overall quality. The experience has reinforced the importance of balancing creative iteration with structured planning in future projects.
+Although satisfied with the final website, the development process highlighted several areas for improvement.  
+
+Next time, I would invest more time refining and testing the Figma prototype before coding. My iterative, code-first approach resulted in substantial mid-project redesigns of the homepage cards, Events page, and Footer, causing unnecessary rework.  
+
+I would also conduct formal user testing at the mid-fidelity stage rather than informal checks. This would have identified UX issues earlier, especially with the booking modal and navigation.  
+
+Additionally, I would establish a structured component library and complete design token system from the outset, instead of allowing them to evolve organically.  
+
+Finally, I would prioritise performance optimisation and accessibility auditing earlier in the build. These changes would enhance efficiency and quality. Overall, the project reinforced the need to better balance creative iteration with structured planning in future work.
 
 ## 3. Low-fi prototypes — what was (and wasn't) implemented
 
@@ -158,35 +162,23 @@ In accordance with the University of Canberra’s GenAI policy and the assessmen
 
 ---
 
-## 7. Running locally + deployment
+## 7. Running Locally and Deployment
 
-### Running locally
-1. Clone this repo.
-2. Open the folder in VS Code.
-3. Install the **Live Server** extension, then right-click `index.html` → "Open with Live Server" for hot reload.
-4. Or simply double-click `index.html` to open in any browser — no build step required.
+### Running Locally
+1. Clone the repository.
+2. Open the project folder in VS Code.
+3. Install the **Live Server** extension and right-click `index.html` → **Open with Live Server** (recommended for hot reload).  
+   Alternatively, simply open `index.html` in any browser — no build tools required.
 
-### Pushing to GitHub
-```bash
-git init
-git add .
-git commit -m "Initial commit: Canberra Modern responsive site"
-git branch -M main
-git remote add origin https://github.com/<BearBear99>/canberra-modern.git
-git push -u origin main
-```
-
-Subsequent commits should be frequent and scoped (e.g. `Add hero carousel`, `Implement lightbox modal`, `Refine responsive layout`). The rubric specifically rewards a committed history over one large push.
-
-### Deploying to GitHub Pages
-1. In your repo, go to **Settings → Pages**.
+### Deployment to GitHub Pages
+1. Go to repository **Settings → Pages**.
 2. Under *Source*, select **Deploy from a branch**.
-3. Choose branch **main** and folder **/ (root)**.
-4. Save. The live URL appears at the top of the Pages settings after about a minute.
+3. Choose **main** branch and **/(root)** folder.
+4. Click Save. The live site URL will appear shortly.
 
-Add the live URL to the top of this file before submission.
+The live URL has been added at the top of this document.
 
----
+**Commit History Note:** Frequent, scoped commits were used throughout development (e.g. “Add hero carousel”, “Implement booking modal”, “Refine mobile layout”) to maintain a clear project history.
 
 ## 8. References
 
