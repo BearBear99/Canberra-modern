@@ -57,27 +57,26 @@ Additionally, I would establish a structured component library and complete desi
 
 Finally, I would prioritise performance optimisation and accessibility auditing earlier in the build. These changes would enhance efficiency and quality. Overall, the project reinforced the need to better balance creative iteration with structured planning in future work.
 
-## 3. Low-fi prototypes — what was (and wasn't) implemented
+## 3. Low-fi Prototypes — What Was (and Wasn't) Implemented
 
 Referring to the low-fi wireframes submitted in Assessment 1:
 
-| Prototype element | Implemented? | Notes |
-|---|---|---|
-| Sticky top nav with logo + 4 links | ✅ | Plus frosted-glass background via `backdrop-filter` |
-| Hero with headline + image | ✅ → upgraded | Became a 5-slide auto-advancing carousel (Parliament House, Cameron Offices, Church, Telstra Tower, Round Restaurant) |
-| Upcoming events grid (3 cards) | ✅ | Uses `repeat(auto-fit, minmax(280px, 1fr))` for fluid responsiveness |
-| Contact form on home | ✅ | Added success state, HTML5 validation |
-| About: circular portrait + text | ✅ | Kept faithful to prototype |
-| About: partner row | ✅ → upgraded | Became an infinite-scroll marquee with pause-on-hover |
-| About: support video block | ✅ → upgraded | Became a responsive YouTube embed (16:9) |
-| About: donation link | ✅ → upgraded | Became a full donation modal with preset amounts |
-| Gallery: large archive image + grid | ✅ | Added category filter (not in original prototype) |
-| Every photo tappable to enlarge | ❌ → added | New feature: universal lightbox |
-| Standalone Book page | ❌ → replaced | Replaced with modal overlay (discussed above) |
-| Footer with partners + copyright | ✅ | Includes the required University of Canberra credit line |
+| Prototype element                  | Implemented?     | Notes |
+|------------------------------------|------------------|-------|
+| Sticky top nav with logo + 4 links | ✅               | Added frosted-glass effect via `backdrop-filter` |
+| Hero with headline + image         | ✅ → upgraded    | Upgraded to a 5-slide auto-advancing carousel |
+| Upcoming events grid (3 cards)     | ✅               | Uses `repeat(auto-fit, minmax(280px, 1fr))` |
+| Contact form on home               | ✅               | Added success state and HTML5 validation |
+| About: circular portrait + text    | ✅               | Kept faithful to prototype |
+| About: partner row                 | ✅ → upgraded    | Upgraded to infinite-scroll marquee with pause-on-hover |
+| About: support video block         | ❌ → replaced    | YouTube embed unsuccessful after multiple attempts; replaced with curated image set at bottom of page. Images open in new lightbox modal (new feature) |
+| About: donation link               | ✅ → upgraded    | Upgraded to full donation modal with preset amounts |
+| Gallery: large archive image + grid| ✅               | Added category filter |
+| Every photo tappable to enlarge    | ✅ (new)         | Universal lightbox modal added |
+| Standalone Book page               | ❌ → replaced    | Replaced with modal overlay triggered by “Book Now” buttons |
+| Footer with partners + copyright   | ✅               | Includes University of Canberra credit line |
 
-The two largest deviations — dropping the standalone Book page and expanding the static partner row into a marquee — were deliberate UX upgrades, and I've discussed the reasoning above.
-
+The two largest deviations — replacing the standalone Book page with a modal and substituting the video block with an image lightbox gallery — were deliberate improvements based on technical constraints and UX considerations.
 ---
 
 ## 4. Technical decisions
