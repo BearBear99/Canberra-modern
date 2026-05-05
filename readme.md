@@ -31,28 +31,27 @@ The implementation adheres strictly to the assessment requirements for semantic 
 
 ## 2. Reflection on the Prototype to Implementation Journey
 
-Translating the high-fidelity Figma prototype into a functional website revealed important differences between static design and real-world web delivery. While the overall mid-century modernist direction and layout structure were preserved, several refinements were required to ensure the site performed well across devices and browsers.
-
-The most significant adaptation concerned the colour palette. Although the original prototype featured a dusty pink, white and brown scheme, only **#F0959C** (dusty pink) was retained as the primary accent colour. Cleaner visual hierarchy, and better accessibility compliance (WCAG AA).
-
-Typography also required substantial revision. Several font sizes, weights, and line-heights that appeared refined in Figma produced poor readability and spacing on actual devices. These were recalibrated using a modular scale, with increased attention to x-height, leading, and responsive behaviour. Minor simplifications were made to decorative dotted lines and spacing to optimise rendering performance and responsive consistency.
+While the Figma prototype served as a valuable conceptual blueprint and visual reference, the transition from prototype to a functional website revealed significant differences between static design and real-world implementation. Many design decisions that appeared effective in Figma required substantial adaptation once actual code was written.
+Nevertheless, I retained several core elements that proved successful in both environments:
+-The overall information architecture, content hierarchy, and user flow.
+-The minimalist visual style, colour palette, and typographic scale established in the design tokens.
+-The placement and functionality of key interactive components (navigation, donation buttons, and marquee).
+This experience highlighted that a prototype is primarily a communication and planning tool rather than a pixel-perfect specification. The implementation phase demanded numerous practical adjustments for performance, accessibility, browser behaviour, and maintainability that could not be fully anticipated in Figma. These refinements ultimately resulted in a more robust, accessible, and efficient final product.
 
 ### What I improved on the prototype
 
-Looking critically at my Figma, the original **Book page** was a weak link — a whole page dedicated to a booking form felt clunky and broke the flow from the Events grid. In this build I replaced it with a **modal overlay** triggered from any "Book Now" button. Nielsen Norman Group (2020) recommends modals specifically for "small, focused tasks" like a booking form, where keeping the user on the page preserves their context. The same modal infrastructure is now reused for the one-off **donation popup** and, with slightly different styling, for the image **lightbox** — a good example of the DRY principle that Frain (2020) argues for as the single biggest predictor of CSS maintainability.
-
-I also tightened the typographic hierarchy. The original used a single sans-serif throughout, and I paired **DM Serif Display** (for headings) with **Manrope** (for body) to get the editorial feel I wanted. Mid-century printing itself mixed heavy serifs with geometric sans-serifs, so the pairing is both currently on-trend and historically sympathetic.
-
-Beyond the original prototype, I added several features that weren't in the Figma but that I felt the site needed to hit a professional standard: the **hero carousel** (gives the homepage a dynamic feel without heavy imagery), the **partner marquee** (more memorable than a static row of logos), the **image lightbox** (essential on a site where photography is the primary content), and a **responsive YouTube embed** on the About page. Each of these was a deliberate UX decision, not feature bloat — I'll defend them specifically in the sections below.
+When reviewing my original Figma prototype, I recognised that it lacked the smoothness and practicality required for a real website. As someone who prefers an iterative, code-first approach rather than detailed upfront planning, I found myself deviating significantly from the prototype once implementation began. Many design decisions that looked acceptable in Figma proved visually or functionally weak in the live environment, prompting substantial revisions.
+On the homepage, I redesigned the project card layout after determining that the original button placement in the bottom-left corner of images appeared unbalanced once built. I also added contextual information directly onto images (date and key details), which had not been considered during the prototyping stage. The Contact Us section was completely restructured: the original design was replaced with a two-column layout featuring a coloured background panel on the left with an image, and the form on the right, significantly improving visual balance and usability.
+The Events page underwent extensive changes. The original colour scheme and layout felt unrefined, so I introduced a new “Upcoming Events” category at the top and adjusted typography, spacing, and overall organisation for better clarity and flow.
+The Footer was entirely redesigned. The prototype version lacked sufficient navigation links and felt incomplete; I therefore created a more comprehensive footer that includes direct links to Home, About, and Gallery, along with additional functional sections. This greatly improves site-wide navigation and user experience.
 
 ### What I'd do differently next time
 
-Three things stand out. First, the **booking modal markup is duplicated on all four pages** because static HTML has no server-side includes. I considered having JavaScript inject the markup dynamically, but that would have meant large chunks of content living outside the HTML — arguably worse for a markup-focused assessment. A better solution would be a static-site generator like Eleventy or a build step with partials, which I'd explore in a next iteration.
-
-Second, I used **`localStorage` nowhere**. A real booking site would at least remember a user's name/email across a session so they don't have to re-type it. I left this out to keep the JS focused on the brief's asked features, but it's a natural next step.
-
-Third, I'd like to add real **keyboard focus trapping** inside the modals. My implementation moves focus in on open and restores it on close, and ESC always closes — but a truly accessible modal would cycle Tab within the panel. The W3C (2023) ARIA authoring practices describe the full pattern; I've implemented a subset and flagged the gap here.
-
+While satisfied with the final website, the development process revealed several areas for improvement.
+Next time, I would create a more refined and thoroughly tested Figma prototype before starting to code. My preference for an iterative, code-first approach led to substantial mid-project redesigns of the homepage cards, Events page layout, and Footer, resulting in unnecessary rework.
+I would also conduct formal user testing at the mid-fidelity stage rather than relying on informal checks. This would have identified UX issues earlier, particularly with the booking modal and navigation.
+Additionally, I would establish a more structured component library and complete design token system from the outset, instead of allowing them to evolve organically.
+Finally, I would prioritise performance optimisation and accessibility auditing earlier in the build. These adjustments would improve efficiency and overall quality. The experience has reinforced the importance of balancing creative iteration with structured planning in future projects.
 ---
 
 ## 3. Low-fi prototypes — what was (and wasn't) implemented
@@ -151,6 +150,7 @@ In accordance with the University of Canberra’s GenAI policy and the assessmen
 - I used Grok primarily as a debugging assistant — when I encountered problems I could not solve (such as certain responsive behaviours, carousel timing issues, and modal accessibility), I asked Grok for suggestions.
 - I also asked Grok to review selected sections of my code for potential improvements in best practices and to help refine some explanatory comments.
 - All final decisions on design, code organisation, and implementation were made by me after reviewing the suggestions.
+-I used Grok (xAI) to correct grammar, improve sentence structure, and refine academic phrasing. All content, ideas, and reflections are my own.
 
 **How it was *not* used:**
 - I did not copy and paste large sections of AI-generated code.
