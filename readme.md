@@ -52,7 +52,6 @@ Next time, I would create a more refined and thoroughly tested Figma prototype b
 I would also conduct formal user testing at the mid-fidelity stage rather than relying on informal checks. This would have identified UX issues earlier, particularly with the booking modal and navigation.
 Additionally, I would establish a more structured component library and complete design token system from the outset, instead of allowing them to evolve organically.
 Finally, I would prioritise performance optimisation and accessibility auditing earlier in the build. These adjustments would improve efficiency and overall quality. The experience has reinforced the importance of balancing creative iteration with structured planning in future projects.
----
 
 ## 3. Low-fi prototypes — what was (and wasn't) implemented
 
