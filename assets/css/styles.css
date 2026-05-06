@@ -508,7 +508,7 @@ textarea { font: inherit; color: inherit; }
   background: var(--c-white);
   border-bottom: 1px solid var(--c-line);
   box-shadow: var(--shadow-md);
-  transform: translateY(-110%);     /* hidden above the viewport */
+  transform: translateY(-130%);     /* hidden above the viewport */
   transition: transform var(--dur-med) var(--ease);
 }
 .nav__list.is-open { transform: translateY(0); }
